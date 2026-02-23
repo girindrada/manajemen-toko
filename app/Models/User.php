@@ -21,7 +21,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
     ];
 
     /**
@@ -45,5 +44,18 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // user bekerja di banyak store
+    public function stores()
+    {
+        return $this->belongsToMany(Store::class, 'store_users')
+            ->withPivot('role_id')
+            ->withTimestamps();
+    }
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class);
     }
 }
