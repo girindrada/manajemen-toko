@@ -4,8 +4,8 @@ namespace App\Repositories;
 
 use App\Models\User;
 use App\Repositories\Contracts\AuthRepositoryInterface;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthRepository implements AuthRepositoryInterface
 {
@@ -19,19 +19,20 @@ class AuthRepository implements AuthRepositoryInterface
     }
 
     public function login(array $credentials){
-        if (!Auth::attempt($credentials)) {
+        if (!$token = auth()->guard('api')->attempt($credentials)) {
             throw ValidationException::withMessages([
                 'email' => ['Email atau password salah.'],
             ]);
         }
 
-        return Auth::user();
+        return [
+            'user' => auth()->guard('api')->user(),
+            'token' => $token,
+        ];
     }
 
     public function logout()
     {
-        Auth::logout();
-        // request()->session()->invalidate();
-        // request()->session()->regenerateToken();
+        JWTAuth::invalidate(JWTAuth::getToken());
     }
 }

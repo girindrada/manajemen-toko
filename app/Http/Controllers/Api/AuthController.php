@@ -35,14 +35,18 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Login success',
-            'data' => new AuthLoginResource($user)
+            'data' => [
+                'user' => new AuthLoginResource($user['user']),
+                'token' => $user['token'],
+                'token_type' => 'bearer'
+            ]
         ]);
     }
 
     public function logout()
     {
         $this->authRepository->logout();
-        
+
         return response()->json([
             'message' => 'logout success',
         ], 200);
