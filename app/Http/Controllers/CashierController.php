@@ -26,7 +26,7 @@ class CashierController extends Controller
         $cashiers = $this->cashierRepository->getAllByStore($storeId);
 
         return response()->json([
-            'message' => 'Success',
+            'message' => 'Success get all cashier data',
             'data' => CashierResource::collection($cashiers),
         ]);
     }
@@ -44,7 +44,7 @@ class CashierController extends Controller
         }
 
         return response()->json([
-            'message' => 'Success',
+            'message' => 'Success get cashier data by id',
             'data' => new CashierResource($cashier),
         ]);
     }

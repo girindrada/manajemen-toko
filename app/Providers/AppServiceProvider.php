@@ -13,7 +13,9 @@ use App\Policies\AdminStorePolicy;
 use App\Repositories\CashierRepository;
 use App\Repositories\Contracts\CashierRepositoryInterface;
 use App\Repositories\Contracts\ProductRepositoryInterface;
+use App\Repositories\Contracts\SaleRepositoryInterface;
 use App\Repositories\ProductRepository;
+use App\Repositories\SaleRepository;
 use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
@@ -28,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(StoreUserRepositoryInterface::class, StoreUserRepository::class);
         $this->app->bind(CashierRepositoryInterface::class, CashierRepository::class);
         $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
+        $this->app->bind(SaleRepositoryInterface::class, SaleRepository::class);
     }
 
     /**

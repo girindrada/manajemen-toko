@@ -19,5 +19,19 @@ class SaleSeeder extends Seeder
             'store_id' => 1,
             'total_price' => 12000,
         ]);
+
+        Sale::create([
+            'invoice' => 'INV-002',
+            'user_id' => 3,
+            'store_id' => 2,
+            'total_price' => 12000,
+        ]);
+
+        Sale::create([
+            'invoice' => 'INV-003',
+            'user_id' => 3,
+            'store_id' => 1,
+            'total_price' => 12000,
+        ]);
     }
 }

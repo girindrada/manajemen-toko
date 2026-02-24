@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\CashierController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\StoreUserController;
 use Illuminate\Support\Facades\Route;
@@ -44,4 +45,8 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
     Route::get('/stores/{storeId}/products/{productId}', [ProductController::class, 'show']);
     Route::put('/stores/{storeId}/products/{productId}', [ProductController::class, 'update']);
     Route::delete('/stores/{storeId}/products/{productId}', [ProductController::class, 'destroy']);
+
+    // menampilkan data penjualan
+    Route::get('/stores/{storeId}/sales', [SaleController::class, 'index']);
+    Route::get('/stores/{storeId}/sales/{saleId}', [SaleController::class, 'show']);
 });
