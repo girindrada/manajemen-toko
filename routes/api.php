@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\CashierController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\StoreUserController;
 use Illuminate\Support\Facades\Route;
@@ -13,6 +14,7 @@ Route::middleware('auth:api')->group(function () {
 });
 
 Route::middleware(['auth:api', 'role:super_admin'])->group(function () {
+    // super admin manage toko
     Route::get('/stores', [StoreController::class, 'index']);
     Route::post('/stores', [StoreController::class, 'store']);
     Route::get('/stores/{id}', [StoreController::class, 'show']);
@@ -24,4 +26,13 @@ Route::middleware(['auth:api', 'role:super_admin'])->group(function () {
     Route::get('/stores/{storeId}/users/{userId}', [StoreUserController::class, 'show']);
     Route::put('/stores/{storeId}/users/{userId}', [StoreUserController::class, 'update']);
     Route::delete('/stores/{storeId}/users/{userId}', [StoreUserController::class, 'destroy']);
+});
+
+Route::middleware(['auth:api', 'role:admin'])->group(function () {
+    // admin manage kasir bedasarkan storeId nya
+    Route::get('/stores/{storeId}/cashiers', [CashierController::class, 'index']);
+    Route::post('/stores/{storeId}/cashiers', [CashierController::class, 'store']);
+    Route::get('/stores/{storeId}/cashiers/{userId}', [CashierController::class, 'show']);
+    Route::put('/stores/{storeId}/cashiers/{userId}', [CashierController::class, 'update']);
+    Route::delete('/stores/{storeId}/cashiers/{userId}', [CashierController::class, 'destroy']);
 });
