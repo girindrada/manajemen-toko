@@ -39,7 +39,7 @@ class AuthController extends Controller
                 'user' => new AuthLoginResource($user['user']),
                 'token' => $user['token'],
                 'token_type' => 'bearer'
-            ]
+            ],
         ]);
     }
 

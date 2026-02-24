@@ -14,6 +14,12 @@ class AuthLoginResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'role' => $this->storeUsers->first()?->role?->name,
+            'created_at' => $this->created_at,
+        ];
     }
 }

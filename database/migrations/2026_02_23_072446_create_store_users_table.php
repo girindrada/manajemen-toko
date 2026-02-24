@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('store_users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('store_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('store_id')->nullable()->constrained()->cascadeOnDelete(); // nullable for super admin first seeding
             $table->foreignId('user_id') ->constrained()->cascadeOnDelete();
             $table->foreignId('role_id')->constrained()->cascadeOnDelete();
             $table->timestamps();

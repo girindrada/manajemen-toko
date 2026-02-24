@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('stores', function (Blueprint $table) {
             $table->id();
             $table->foreignId('store_level_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
             $table->string('name');
             $table->text('address')->nullable();
             $table->timestamps();

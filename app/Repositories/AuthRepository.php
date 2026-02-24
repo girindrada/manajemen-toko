@@ -26,7 +26,7 @@ class AuthRepository implements AuthRepositoryInterface
         }
 
         return [
-            'user' => auth()->guard('api')->user(),
+            'user' => auth()->guard('api')->user()->load('storeUsers'),
             'token' => $token,
         ];
     }

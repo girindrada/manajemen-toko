@@ -24,6 +24,11 @@ class Store_user extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function storeUsers()
+    {
+        return $this->hasMany(Store_user::class);
+    }
+
     public function role()
     {
         return $this->belongsTo(Role::class);

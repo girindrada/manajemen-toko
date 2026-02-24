@@ -15,14 +15,14 @@ class StoreSeeder extends Seeder
     {
         Store::create([
             'name' => 'Toko Pusat',
+            'address' => 'Jakarta',
             'store_level_id' => 1,
-            'created_by' => 1
         ]);
 
         Store::create([
             'name' => 'Toko Cabang Jogja',
+            'address' => 'Jogjakarta',
             'store_level_id' => 2,
-            'created_by' => 2
         ]);
     }
 }
