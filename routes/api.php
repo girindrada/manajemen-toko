@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\CashierController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\StoreUserController;
 use Illuminate\Support\Facades\Route;
@@ -35,4 +36,11 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
     Route::get('/stores/{storeId}/cashiers/{userId}', [CashierController::class, 'show']);
     Route::put('/stores/{storeId}/cashiers/{userId}', [CashierController::class, 'update']);
     Route::delete('/stores/{storeId}/cashiers/{userId}', [CashierController::class, 'destroy']);
+
+    // admin manage product bedasarkan storeId nya
+    Route::get('/stores/{storeId}/products', [ProductController::class, 'index']);
+    Route::post('/stores/{storeId}/products', [ProductController::class, 'store']);
+    Route::get('/stores/{storeId}/products/{productId}', [ProductController::class, 'show']);
+    Route::put('/stores/{storeId}/products/{productId}', [ProductController::class, 'update']);
+    Route::delete('/stores/{storeId}/products/{productId}', [ProductController::class, 'destroy']);
 });
