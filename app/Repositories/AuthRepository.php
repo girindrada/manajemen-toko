@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Models\Role;
+use App\Models\Store_user;
 use App\Models\User;
 use App\Repositories\Contracts\AuthRepositoryInterface;
 use Illuminate\Validation\ValidationException;
@@ -11,11 +13,21 @@ class AuthRepository implements AuthRepositoryInterface
 {
     public function register(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+
+         $role = Role::where('name', 'super_admin')->first();
+
+        Store_user::create([
+            'store_id' => null,
+            'user_id' => $user->id,
+            'role_id' => $role->id,
+        ]);
+
+        return $user->load('storeUsers.role');
     }
 
     public function login(array $credentials){

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Policies\AdminStorePolicy;
+use App\Policies\KasirStorePolicy;
 use App\Repositories\Contracts\ProductRepositoryInterface;
 use Illuminate\Support\Facades\Gate;
 
@@ -19,7 +20,10 @@ class ProductController extends Controller
 
     public function index(int $storeId)
     {
-        if (Gate::denies('manageStore', [AdminStorePolicy::class, $storeId])) {
+        $isAdmin = Gate::check('manageStore', [AdminStorePolicy::class, $storeId]);
+        $isKasir = Gate::check('manageStore', [KasirStorePolicy::class, $storeId]);
+
+        if (!$isAdmin && !$isKasir) {
             return response()->json(['message' => 'Forbidden'], 403);
         }
 

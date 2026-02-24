@@ -50,3 +50,13 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
     Route::get('/stores/{storeId}/sales', [SaleController::class, 'index']);
     Route::get('/stores/{storeId}/sales/{saleId}', [SaleController::class, 'show']);
 });
+
+Route::middleware(['auth:api', 'role:kasir'])->group(function () {
+    Route::get('/stores/{storeId}/products', [ProductController::class, 'index']);
+
+    // create penjualan by kasir
+    Route::post('/stores/{storeId}/sales', [SaleController::class, 'createSale']);
+
+    Route::get('/stores/{storeId}/sales', [SaleController::class, 'index']);
+    Route::get('/stores/{storeId}/sales/{saleId}', [SaleController::class, 'show']);
+});

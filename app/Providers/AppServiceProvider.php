@@ -10,6 +10,7 @@ use App\Repositories\Contracts\StoreUserRepositoryInterface;
 use App\Repositories\StoreUserRepository;
 use Illuminate\Support\ServiceProvider;
 use App\Policies\AdminStorePolicy;
+use App\Policies\KasirStorePolicy;
 use App\Repositories\CashierRepository;
 use App\Repositories\Contracts\CashierRepositoryInterface;
 use App\Repositories\Contracts\ProductRepositoryInterface;
@@ -38,7 +39,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Admin hanya boleh mengelola data yang ada di storeId nya 
+        // cek user role admin
         Gate::policy(AdminStorePolicy::class, AdminStorePolicy::class);
+
+        // cek user role kasir
+        Gate::policy(KasirStorePolicy::class, KasirStorePolicy::class);
     }
 }
