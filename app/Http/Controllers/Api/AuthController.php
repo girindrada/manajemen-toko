@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthLoginRequest;
 use App\Http\Requests\AuthRegisterRequest;
+use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Resources\AuthLoginResource;
 use App\Http\Resources\AuthRegisterResource;
 use App\Repositories\Contracts\AuthRepositoryInterface;
@@ -50,5 +51,15 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'logout success',
         ], 200);
+    }
+
+    public function updateProfile(UpdateProfileRequest $request)
+    {
+        $user = $this->authRepository->updateProfile(auth()->guard('api')->id(), $request->validated());
+
+        return response()->json([
+            'message' => 'Profile updated successfully',
+            'data' => new AuthRegisterResource($user), 
+        ]);
     }
 }

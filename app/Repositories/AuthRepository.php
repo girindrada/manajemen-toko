@@ -35,4 +35,20 @@ class AuthRepository implements AuthRepositoryInterface
     {
         JWTAuth::invalidate(JWTAuth::getToken());
     }
+
+    public function updateProfile(int $userId, array $data)
+    {
+        $user = User::find($userId);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $user->update([
+            'name' => $data['name'] ?? $user->name,
+            'email' => $data['email'] ?? $user->email,
+            'password' => isset($data['password']) ? bcrypt($data['password']) : $user->password,
+        ]);
+
+        return $user;
+    }
 }

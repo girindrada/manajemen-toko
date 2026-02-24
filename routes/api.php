@@ -12,6 +12,7 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
+    Route::put('/auth/profile', [AuthController::class, 'updateProfile']);
 });
 
 Route::middleware(['auth:api', 'role:super_admin'])->group(function () {
