@@ -59,7 +59,7 @@ class StoreRepository implements StoreRepositoryInterface
 
             // generate kredensial
             $slug = rand(1000, 9999);
-            $password = '12345678';
+            $password = config('app.default_password_store_user');
 
             $user = User::create([
                 'name' => $roleName . ' ' . $store->name,
