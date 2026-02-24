@@ -5,7 +5,7 @@ namespace App\Repositories\Contracts;
 interface ProductRepositoryInterface
 {
     // get all product pada sebuah toko by storeId
-    public function getAllByStore(int $storeId);
+    public function getAllByStore(int $storeId, ?string $search = null, int $perPage = 10);
 
     // get product in store by productId
     public function findByStore(int $storeId, int $productId);

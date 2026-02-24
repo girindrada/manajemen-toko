@@ -9,12 +9,17 @@ use App\Repositories\Contracts\CashierRepositoryInterface;
 
 class CashierRepository implements CashierRepositoryInterface
 {
-    public function getAllByStore(int $storeId)
+    public function getAllByStore(int $storeId, ?string $search = null, int $perPage = 10)
     {
         return Store_user::with(['user', 'role'])
             ->where('store_id', $storeId)
             ->whereHas('role', fn($q) => $q->where('name', 'kasir'))
-            ->get();
+            ->when($search, function ($q) use ($search) {
+                $q->whereHas('user', function ($q) use ($search) {
+                    $q->where('name', 'like', '%' . $search . '%');
+                });
+            })
+            ->paginate($perPage);
     }
 
     public function findByStore(int $storeId, int $userId)

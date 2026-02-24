@@ -5,7 +5,7 @@ namespace App\Repositories\Contracts;
 interface CashierRepositoryInterface
 {
     // get data all kasir berdasarkan store id
-    public function getAllByStore(int $storeId);
+    public function getAllByStore(int $storeId, ?string $search = null, int $perPage = 10);
 
     // get data kasir di store by id
     public function findByStore(int $storeId, int $userId);

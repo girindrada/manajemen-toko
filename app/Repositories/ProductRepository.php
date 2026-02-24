@@ -7,9 +7,11 @@ use App\Repositories\Contracts\ProductRepositoryInterface;
 
 class ProductRepository implements ProductRepositoryInterface
 {
-    public function getAllByStore(int $storeId)
+    public function getAllByStore(int $storeId, ?string $search = null, int $perPage = 10)
     {
-        return Product::where('store_id', $storeId)->get();
+        return Product::where('store_id', $storeId)
+            ->when($search, fn($q) => $q->where('name', 'like', '%' . $search . '%'))
+            ->paginate($perPage);
     }
 
     public function findByStore(int $storeId, int $productId)

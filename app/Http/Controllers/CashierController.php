@@ -6,6 +6,7 @@ use App\Http\Requests\CashierRequest;
 use App\Http\Resources\CashierResource;
 use App\Policies\AdminStorePolicy;
 use App\Repositories\Contracts\CashierRepositoryInterface;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class CashierController extends Controller
@@ -17,17 +18,23 @@ class CashierController extends Controller
         $this->cashierRepository = $cashierRepository;
     }
 
-    public function index(int $storeId)
+    public function index(int $storeId, Request $request)
     {
         if (Gate::denies('manageStore', [AdminStorePolicy::class, $storeId])) {
             return response()->json(['message' => 'Forbidden'], 403);
         }
 
-        $cashiers = $this->cashierRepository->getAllByStore($storeId);
+        $cashiers = $this->cashierRepository->getAllByStore($storeId,  $request->get('search'), $request->get('per_page', 5));
 
         return response()->json([
             'message' => 'Success get all cashier data',
-            'data' => CashierResource::collection($cashiers),
+            'data' => CashierResource::collection($cashiers->items()),
+            'meta' => [
+                'current_page' => $cashiers->currentPage(),
+                'last_page' => $cashiers->lastPage(),
+                'per_page' => $cashiers->perPage(),
+                'total' => $cashiers->total(),
+            ]
         ]);
     }
 

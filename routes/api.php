@@ -14,6 +14,11 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 Route::middleware('auth:api')->group(function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::put('/auth/profile', [AuthController::class, 'updateProfile']);
+
+    Route::middleware('role:admin,kasir')->group(function () {
+        Route::get('/stores/{storeId}/products', [ProductController::class, 'index']);
+        Route::get('/stores/{storeId}/products/{productId}', [ProductController::class, 'show']);
+    });
 });
 
 Route::middleware(['auth:api', 'role:super_admin'])->group(function () {
@@ -40,9 +45,9 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
     Route::delete('/stores/{storeId}/cashiers/{userId}', [CashierController::class, 'destroy']);
 
     // admin manage product bedasarkan storeId nya
-    Route::get('/stores/{storeId}/products', [ProductController::class, 'index']);
+    // Route::get('/stores/{storeId}/products', [ProductController::class, 'index']);
+    // Route::get('/stores/{storeId}/products/{productId}', [ProductController::class, 'show']);
     Route::post('/stores/{storeId}/products', [ProductController::class, 'store']);
-    Route::get('/stores/{storeId}/products/{productId}', [ProductController::class, 'show']);
     Route::put('/stores/{storeId}/products/{productId}', [ProductController::class, 'update']);
     Route::delete('/stores/{storeId}/products/{productId}', [ProductController::class, 'destroy']);
 
@@ -52,8 +57,6 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
 });
 
 Route::middleware(['auth:api', 'role:kasir'])->group(function () {
-    Route::get('/stores/{storeId}/products', [ProductController::class, 'index']);
-
     // create penjualan by kasir
     Route::post('/stores/{storeId}/sales', [SaleController::class, 'createSale']);
 

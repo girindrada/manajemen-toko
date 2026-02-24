@@ -7,6 +7,7 @@ use App\Http\Resources\ProductResource;
 use App\Policies\AdminStorePolicy;
 use App\Policies\KasirStorePolicy;
 use App\Repositories\Contracts\ProductRepositoryInterface;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
@@ -18,29 +19,38 @@ class ProductController extends Controller
         $this->productRepository = $productRepository;
     }
 
-    public function index(int $storeId)
+    public function index(int $storeId, Request $request)
     {
         $isAdmin = Gate::check('manageStore', [AdminStorePolicy::class, $storeId]);
         $isKasir = Gate::check('manageStore', [KasirStorePolicy::class, $storeId]);
 
         if (!$isAdmin && !$isKasir) {
-            return response()->json(['message' => 'Forbidden'], 403);
+            return response()->json(['message' => 'Forbidden User'], 403);
         }
 
-        $products = $this->productRepository->getAllByStore($storeId);
+        $products = $this->productRepository->getAllByStore($storeId, $request->get('search'), $request->get('per_page', 2));
 
         return response()->json([
             'message' => 'Success',
-            'data' => ProductResource::collection($products),
+            'data' => ProductResource::collection($products->items()),
+            'meta' => [
+                'current_page' => $products->currentPage(),
+                'last_page' => $products->lastPage(),
+                'per_page' => $products->perPage(),
+                'total' => $products->total(),
+            ]
         ]);
     }
 
     public function show(int $storeId, int $productId)
     {
-        if (Gate::denies('manageStore', [AdminStorePolicy::class, $storeId])) {
-            return response()->json(['message' => 'Forbidden'], 403);
-        }
+        $isAdmin = Gate::check('manageStore', [AdminStorePolicy::class, $storeId]);
+        $isKasir = Gate::check('manageStore', [KasirStorePolicy::class, $storeId]);
 
+        if (!$isAdmin && !$isKasir) {
+            return response()->json(['message' => 'Forbidden User'], 403);
+        }
+        
         $product = $this->productRepository->findByStore($storeId, $productId);
 
         if (!$product) {
